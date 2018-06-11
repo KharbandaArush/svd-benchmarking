@@ -1,15 +1,20 @@
 #Script for genrating data
 #sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-sizes=[100,1000]
+sizes=[]
 #cores=[1,2,4,8,16,32]
 cores=[1,2,4,8]
 import numpy as np
 import array
-sizes=array.array('i',[4,5])
+#sizes=array.array('i',[4,5])
 from pyspark import SparkContext, SparkConf
 from pyspark.mllib.linalg.distributed import RowMatrix
 from datetime import datetime
 benchmarks={}
+
+def print_metrics(benchmarks):
+    for key in benchmarks.keys():
+        print "Running Time Report " + key + " - " + str(benchmarks.get(key))
+
 
 for size in sizes:
 
@@ -22,8 +27,7 @@ for size in sizes:
         input_array[j][j]=1
 
     #check random array
-    print('\n'.join(['    '.join(['{:10}'.format(item) for item in row])
-                     for row in input_array]))
+    #print('\n'.join(['    '.join(['{:10}'.format(item) for item in row])for row in input_array]))
 
     #Step-2
     #running SVD
@@ -52,8 +56,7 @@ for size in sizes:
         benchmarks[str(size)+'_'+str(core)]=running_time
 
         sc.stop()
-        for key in benchmarks.keys():
-            print key + " - " + str(benchmarks.get(key))
+        print_metrics(benchmarks)
 
-for key in benchmarks.keys():
-    print key + " - " + str(benchmarks.get(key))
+print_metrics(benchmarks)
+
