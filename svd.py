@@ -1,11 +1,9 @@
 #Script for genrating data
 #sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-sizes=[]
+sizes=[100,1000]
 #cores=[1,2,4,8,16,32]
 cores=[1,2,4,8]
 import numpy as np
-import array
-#sizes=array.array('i',[4,5])
 from pyspark import SparkContext, SparkConf
 from pyspark.mllib.linalg.distributed import RowMatrix
 from datetime import datetime
