@@ -49,7 +49,7 @@ for size in sizes:
 
         running_time=end-start
 
-        benchmarks[size+'_'+core]=running_time
+        benchmarks[str(size)+'_'+str(core)]=running_time
 
         sc.stop()
 
