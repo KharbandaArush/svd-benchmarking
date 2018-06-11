@@ -28,7 +28,7 @@ for size in sizes:
     #Step-2
     #running SVD
     for core in cores:
-        executor_cores= 4 if core%4==0 else cores%4
+        executor_cores= 4 if core%4==0 else core%4
         executors=core/4 if core%4==0 else core
         conf = SparkConf().setAppName("SVDBenchmarking")\
             .setMaster("yarn")\
