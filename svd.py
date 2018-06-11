@@ -52,6 +52,8 @@ for size in sizes:
         benchmarks[str(size)+'_'+str(core)]=running_time
 
         sc.stop()
+        for key in benchmarks.keys():
+            print key + " - " + str(benchmarks.get(key))
 
 for key in benchmarks.keys():
-    print key + " - " +benchmarks.get(key)
+    print key + " - " + str(benchmarks.get(key))
