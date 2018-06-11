@@ -31,8 +31,6 @@ for size in sizes:
         executor_cores= 4 if core%4==0 else core%4
         executors=core/4 if core%4==0 else core
         conf = SparkConf().setAppName("SVDBenchmarking")\
-            .setMaster("yarn")\
-            .set("spark.submit.deployMode","cluster")\
             .set("spark.executor.cores",executor_cores)\
             .set("spark.executor.instances",executors)
 
