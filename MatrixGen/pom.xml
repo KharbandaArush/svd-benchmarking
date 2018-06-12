@@ -135,7 +135,7 @@
 
     </dependencies>
 
-    <profiles>
+    <!--<profiles>
         <profile>
             <id>spark-1.1</id>
             <properties>
@@ -207,7 +207,7 @@
             </properties>
         </profile>
 
-    </profiles>
+    </profiles>-->
 
 
     <build>
