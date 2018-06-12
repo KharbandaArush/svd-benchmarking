@@ -22,8 +22,8 @@ object SymmetricRandomMatrix {
     //val sizes=Array (100,1000, 10000, 50000, 100000, 500000, 1000000)
 
     val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" ).setMaster("local[2]")
-    //.set("spark.executor.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
-      //.set("spark.driver.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
+      .set("spark.executor.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
+      .set("spark.driver.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
       .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
       .set("spark.speculation","false")
     val sc = new SparkContext(conf)
