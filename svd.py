@@ -35,7 +35,8 @@ def transposeRowMatrix(m):
     m.rows.foreach(g)
     transposedRowsRDD = m.rows.zipWithIndex().foreach(g)
     #.rows.zipWithIndex.map{case (row, rowIndex) => rowToTransposedTriplet(row, rowIndex)}.flatMap(x => x).groupByKey.sortByKey().map(_._2).map(buildRow)
-    RowMatrix(transposedRowsRDD)
+    RowMatrix(m)
+    #RowMatrix(transposedRowsRDD)
 
 '''
 def rowToTransposedTriplet(row, rowIndex):
