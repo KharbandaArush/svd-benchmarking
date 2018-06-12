@@ -4,7 +4,7 @@
 
 #Benchmarking Setup - Configure here for the benchmark size required
 #sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-sizes=[100,1000]
+sizes=[4]
 
 #cores=[1,2,4,8,16,32,64,128]
 cores=[1,2,4,8]
@@ -29,30 +29,55 @@ def print_metrics(benchmarks):
         print "Running Time Report " + key + " - " + str(benchmarks.get(key))
 
 def g(x):
-    print x
+    print str(x)
+
+def i (x):
+    for a in x[1]:
+        print "here"+ str(a),
+    print str(x[0])+""
+
+
+def j (x):
+    for a in x:
+        print "here"+ str(a),
+    print ""
 
 def h(x, a):
-    a[x._1] = x._2
+    a[x[0]] = x[1]
+
+def p(x):
+    x[1]
 
 
 def transposeRowMatrix(m):
-    transposedRowsRDD = m.rows.zipWithIndex().map(lambda x:  rowToTransposedTriplet(x._1, x._2)).flatmap(lambda x:x).groupByKey().sortByKey().map(lambda  x:x._2).map(lambda x: buildRow(x))
+    transposedRowsRDD = m.rows.zipWithIndex()\
+        .map(lambda x: rowToTransposedTriplet(x[0], x[1]))\
+        .flatMap(lambda x: x)\
+        .groupByKey()\
+        .sortByKey()\
+        .map(lambda x: x[1])\
+        .map(lambda x: buildRow(x))
+    #transposedRowsRDD = m.rows.zipWithIndex().map(lambda x:  rowToTransposedTriplet(x._1, x._2)).flatmap(lambda x:x).groupByKey().sortByKey().map(lambda  x:x._2).map(lambda x: buildRow(x))
     #.rows.zipWithIndex.map{case (row, rowIndex) => rowToTransposedTriplet(row, rowIndex)}.flatMap(x => x).groupByKey.sortByKey().map(_._2).map(buildRow)
 
-    RowMatrix(transposedRowsRDD)
+    return RowMatrix(transposedRowsRDD)
 
 
 def rowToTransposedTriplet(row, rowIndex):
-    indexedRow = row.toArray.zipWithIndex()
-    indexedRow.map(lambda x: (long(x._2), (rowIndex, x._1)) )
-    #indexedRow.map{case (value, colIndex) => (colIndex.toLong, (rowIndex, value))}
+    output=[]
+    indexedRow = np.ndenumerate(row.toArray())
+    for a,b in indexedRow:
+        output.append((a[0], (rowIndex, long(b))))
+    return output
+    #indexedRow = row.toArray.zipWithIndex
+    #indexedRow.map {case(value, colIndex) = > (colIndex.toLong, (rowIndex, value))}
 
 
 def buildRow(rowWithIndexes):
-    resArr = rowWithIndexes.size
-    rowWithIndexes.foreach(lambda x: h(x,resArr) )
-    #rowWithIndexes.foreach{case (index, value) =>resArr(index.toInt) = value}
-    Vectors.dense(resArr)
+    resArr = []
+    for x in rowWithIndexes:
+        resArr.insert(x[0], x[1])
+    return Vectors.dense(resArr)
 
 
 
@@ -73,13 +98,17 @@ for size in sizes:
         sc = SparkContext.getOrCreate(conf=conf)
 
         # Step 1 - Generating Data
-        randomRdd = RandomRDDs.normalRDD(sc, size)
-        randomRdd.foreach(lambda x: g(x))
+        randomRdd = RandomRDDs.poissonVectorRDD(sc, numCols=size,numRows=size, mean=1, seed=1)
+        #randomRdd.foreach(lambda x:g(x))
         m=RowMatrix(randomRdd)
-        transposeRowMatrix(m)
+        transposedMatrix=transposeRowMatrix(m)
+
+        input_rdd=(transposedMatrix)/(2*randomRdd.max())
+        input_rdd.foreach(lambda x:g(x))
 
 
-'''
+
+        '''
         # The diagonal values of A = 1:  A[i,i] = 1
         for j in range(size):
             input_array[j][j] = 1
@@ -105,6 +134,6 @@ for size in sizes:
 
         #Freeing up spark cluster
         sc.stop()
-'''
+        '''
 print_metrics(benchmarks)
 
