@@ -18,22 +18,36 @@ object SymmetricRandomMatrix {
   }
   def main(args: Array[String]) {
 
-    //val sizes =  Array (2)
-    val sizes=Array (100,1000, 10000, 50000, 100000, 500000, 1000000)
+    val sizes =  Array (2)
+    //val sizes=Array (100,1000, 10000, 50000, 100000, 500000, 1000000)
 
-    val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" )
-
+    val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" ).setMaster("local[2]")
+    //.set("spark.executor.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
+      //.set("spark.driver.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
+      .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
+      .set("spark.speculation","false")
     val sc = new SparkContext(conf)
+    sc.hadoopConfiguration.set("fs.s3.awsAccessKeyId", "AKIAJNOJTH2RA4QO6MTA")
+    sc.hadoopConfiguration.set("fs.s3.awsSecretAccessKey", "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")
+    sc.hadoopConfiguration.set("fs.s3.impl", "org.apache.hadoop.fs.s3.S3FileSystem")
+    /*sc.hadoopConfiguration.set("fs.s3a.awsAccessKeyId", "AKIAJNOJTH2RA4QO6MTA")
+    sc.hadoopConfiguration.set("fs.s3a.awsSecretAccessKey", "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")
+    sc.hadoopConfiguration.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+    sc.hadoopConfiguration.set("fs.s3n.awsAccessKeyId", "AKIAJNOJTH2RA4QO6MTA")
+    sc.hadoopConfiguration.set("fs.s3n.awsSecretAccessKey", "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")
+    sc.hadoopConfiguration.set("fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")*/
+
+
     for(size <- sizes)
       {
         val matrixA = MTUtils.randomDenVecMatrix(sc, size, size)
-        matrixA.rows.foreach(println)
+
         val matrixB = matrixA.transpose()
-        matrixB.blocks.foreach(println)
+
         val matrixC=matrixA.add(matrixB).divide(2)
-        matrixC.getRows.foreach(println)
+
         val rddIntermid=matrixC.getRows.map(functiony)
-        rddIntermid.foreach(println)
+        rddIntermid.saveAsTextFile("s3://svd-benchmarking-arrays/input_"+size)
 
 
 
