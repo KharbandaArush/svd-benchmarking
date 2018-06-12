@@ -69,8 +69,8 @@ for size in sizes:
 
         # Step 1 - Generating Data
         randomRdd = RandomRDDs.normalRDD(sc, size)
+        randomRdd.foreach(lambda x: g(x))
         m=RowMatrix(randomRdd)
-        m.foreach(lambda x: g(x))
         #transposeRowMatrix(m)
 
 
