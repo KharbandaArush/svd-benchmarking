@@ -70,6 +70,7 @@ for size in sizes:
         # Step 1 - Generating Data
         randomRdd = RandomRDDs.normalRDD(sc, size)
         m=RowMatrix(randomRdd)
+        m.foreach(lambda x: g(x))
         #transposeRowMatrix(m)
 
 
