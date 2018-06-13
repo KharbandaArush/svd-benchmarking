@@ -103,18 +103,20 @@ for size in sizes:
         #Initializing Spark
         conf = SparkConf().setAppName("SVDBenchmarking")\
             .set("spark.executor.cores",executor_cores)\
-            .set("spark.executor.instances",executors)
+            .set("spark.executor.instances",executors)\
+            .set("spark.default.parallelism", str(size))\
+            .set("spark.executor.memory", "5g")
+
         sc = SparkContext.getOrCreate(conf=conf)
 
         start = datetime.now()
 
         inputRdd=sc.textFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/input"+str(size))
-        intermid2=inputRdd.map(lambda x: textToVector(x)).sortByKey().map(lambda x: extract(x))
-
-
-
-
-
+        intermid2=inputRdd.foreach(lambda x: g(x))
+            #.map(lambda x: textToVector(x))
+            #.sortByKey()\
+            #.map(lambda x: extract(x))
+        '''
         mat=RowMatrix(intermid2)
 
         # Step-2
@@ -133,5 +135,6 @@ for size in sizes:
 
         #Freeing up spark cluster
         sc.stop()
+        '''
 print_metrics(benchmarks)
 
