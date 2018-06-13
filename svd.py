@@ -4,7 +4,7 @@
 
 #Benchmarking Setup - Configure here for the benchmark size required
 #sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-sizes=[4]
+sizes=[2]
 
 #cores=[1,2,4,8,16,32,64,128]
 cores=[1,2,4,8]
@@ -97,26 +97,13 @@ for size in sizes:
             .set("spark.executor.instances",executors)
         sc = SparkContext.getOrCreate(conf=conf)
 
-        # Step 1 - Generating Data
-        randomRdd = RandomRDDs.poissonVectorRDD(sc, numCols=size,numRows=size, mean=1, seed=1)
-        #randomRdd.foreach(lambda x:g(x))
-        m=RowMatrix(randomRdd)
-        transposedMatrix=transposeRowMatrix(m)
+        start = datetime.now()
 
-        input_rdd=(transposedMatrix)/(2*randomRdd.max())
-        input_rdd.foreach(lambda x:g(x))
+        inputRdd=sc.textfile("hdfs://localhost:8020/data/input"+size)
+        inputRdd.foreach(lambda x: g(x))
 
 
-
-        '''
-        # The diagonal values of A = 1:  A[i,i] = 1
-        for j in range(size):
-            input_array[j][j] = 1
-
-        #Starting clock for benchmark
-        start=datetime.now()
-        rows=sc.parallelize(input_array)
-
+        mat=RowMatrix(inputRdd)
 
         # Step-2
         # running SVD
@@ -134,6 +121,5 @@ for size in sizes:
 
         #Freeing up spark cluster
         sc.stop()
-        '''
 print_metrics(benchmarks)
 
