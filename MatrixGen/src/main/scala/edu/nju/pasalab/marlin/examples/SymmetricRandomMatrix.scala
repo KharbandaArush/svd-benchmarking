@@ -19,7 +19,7 @@ object SymmetricRandomMatrix {
   def main(args: Array[String]) {
 
     //val sizes =  Array (2)
-    val sizes=Array (2,100,1000, 10000, 50000, 100000, 500000, 1000000)
+    val sizes=Array (10000, 50000, 100000, 500000, 1000000)
 
     val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" )
       .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
@@ -39,7 +39,7 @@ object SymmetricRandomMatrix {
         val matrixC=matrixA.add(matrixB).divide(2)
 
         val rddIntermid=matrixC.getRows.map(functiony)
-        rddIntermid.saveAsTextFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/inputsequence"+size)
+        rddIntermid.saveAsTextFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/input"+size)
       }
     sc.stop()
 
