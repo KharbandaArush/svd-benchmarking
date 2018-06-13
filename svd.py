@@ -6,8 +6,8 @@
 #sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
 sizes=[2]
 
-#cores=[1,2,4,8,16,32,64,128]
-cores=[1,2,4,8]
+cores=[1,2,4,8,16,32,64]
+#cores=[1,2,4,8]
 
 #Refer Assumption 1, change this if changing AWS instance type
 cores_on_single_machine=4
