@@ -38,7 +38,7 @@ def print_metrics(benchmarks):
         print "Running Time Report " + key + " - " + str(benchmarks.get(key))
 
 def g(x):
-    print str(x)
+    print "output"+str(x)
 
 def i (x):
     for a in x[1]:
