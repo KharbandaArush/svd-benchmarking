@@ -99,7 +99,7 @@ for size in sizes:
 
         start = datetime.now()
 
-        inputRdd=sc.textfile("hdfs://localhost:8020/data/input"+size)
+        inputRdd=sc.textfile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/input"+size)
         inputRdd.foreach(lambda x: g(x))
 
 
