@@ -32,7 +32,7 @@ object SymmetricRandomMatrix {
 
     for(size <- sizes)
       {
-        val matrixA = MTUtils.randomDenVecMatrix(sc, size, size)
+        val matrixA = MTUtils.randomDenVecMatrix(sc, size, size, numPartitions=20)
 
         val matrixB = matrixA.transpose()
 
