@@ -27,7 +27,7 @@ object SymmetricRandomMatrix {
         val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "3").set("spark.executor.instances", "32" )
           .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
           .set("spark.speculation","false")
-          .set("spark.default.parallelism",(size/25)+"")
+          .set("spark.default.parallelism",(size/10)+"")
           .set("spark.executor.memory","25g")
         val sc = new SparkContext(conf)
 
