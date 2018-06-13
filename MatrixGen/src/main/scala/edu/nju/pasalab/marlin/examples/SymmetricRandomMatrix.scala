@@ -18,10 +18,10 @@ object SymmetricRandomMatrix {
   }
   def main(args: Array[String]) {
 
-    val sizes =  Array (2)
-    //val sizes=Array (100,1000, 10000, 50000, 100000, 500000, 1000000)
+    //val sizes =  Array (2)
+    val sizes=Array (100,1000, 10000, 50000, 100000, 500000, 1000000)
 
-    val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" ).setMaster("local[2]")
+    val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" )
       .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
       .set("spark.speculation","false")
     val sc = new SparkContext(conf)
