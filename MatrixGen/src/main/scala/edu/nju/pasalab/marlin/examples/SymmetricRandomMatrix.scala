@@ -47,7 +47,7 @@ object SymmetricRandomMatrix {
         val matrixC=matrixA.add(matrixB).divide(2)
 
         val rddIntermid=matrixC.getRows.map(functiony)
-        rddIntermid.saveAsTextFile("hdfs://data/input"+size)
+        rddIntermid.saveAsTextFile("hdfs://localhost:9200/data/input"+size)
       }
     sc.stop()
 
