@@ -39,9 +39,7 @@ object SymmetricRandomMatrix {
         val matrixC=matrixA.add(matrixB).divide(2)
 
         val rddIntermid=matrixC.getRows.map(functiony)
-
-        val sequenceRdd=new org.apache.spark.rdd.SequenceFileRDDFunctions[NullWritable, BytesWritable](rddIntermid)
-        sequenceRdd.saveAsSequenceFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/inputsequence"+size)
+        rddIntermid.saveAsTextFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/inputsequence"+size)
       }
     sc.stop()
 
