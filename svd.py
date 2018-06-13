@@ -111,7 +111,7 @@ for size in sizes:
 
         start = datetime.now()
 
-        inputRdd=sc.textFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/input"+str(size))
+        inputRdd=sc.textFile("hdfs://ip-172-31-8-82.us-west-1.compute.internal:8020/data/input"+str(size))
         intermid2=inputRdd.foreach(lambda x: g(x))
             #.map(lambda x: textToVector(x))
             #.sortByKey()\
