@@ -24,11 +24,11 @@ object SymmetricRandomMatrix {
     for(size <- sizes)
       {
 
-        val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" )
+        val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "3").set("spark.executor.instances", "32" )
           .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
           .set("spark.speculation","false")
           .set("spark.default.parallelism",(size/25)+"")
-          .set("spark.executor.memory","5g")
+          .set("spark.executor.memory","25g")
         val sc = new SparkContext(conf)
 
         val matrixA = MTUtils.randomDenVecMatrix(sc, size, size, numPartitions=20)
