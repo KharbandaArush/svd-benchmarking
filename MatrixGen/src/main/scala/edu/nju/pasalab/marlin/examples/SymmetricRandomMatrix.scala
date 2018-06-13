@@ -47,7 +47,7 @@ object SymmetricRandomMatrix {
         val matrixC=matrixA.add(matrixB).divide(2)
 
         val rddIntermid=matrixC.getRows.map(functiony)
-        rddIntermid.saveAsTextFile("s3://svd-benchmarking-arrays/input"+size)
+        rddIntermid.saveAsTextFile("s3://svddata/input"+size)
       }
     sc.stop()
 
