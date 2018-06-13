@@ -3,12 +3,12 @@ package edu.nju.pasalab.marlin.examples
 
 
 import breeze.linalg.DenseVector
-
 import edu.nju.pasalab.marlin.utils.MTUtils
+import org.apache.hadoop.io.{BytesWritable, NullWritable}
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.Row
-
+import org.apache.spark.SparkContext._
 
 object SymmetricRandomMatrix {
 
@@ -24,6 +24,7 @@ object SymmetricRandomMatrix {
     val conf = new  SparkConf().setAppName("SVD-Datagen").set("spark.executor.cores", "4").set("spark.executor.instances", "32" )
       .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
       .set("spark.speculation","false")
+      .set("spark.default.parallelism","20")
     val sc = new SparkContext(conf)
     sc.hadoopConfiguration.set("fs.s3.awsAccessKeyId", System.getenv("AWS_ACCESS_KEY"))
     sc.hadoopConfiguration.set("fs.s3.awsSecretAccessKey", System.getenv("AWS_SECRET_ACCESS_KEY"))
@@ -38,7 +39,9 @@ object SymmetricRandomMatrix {
         val matrixC=matrixA.add(matrixB).divide(2)
 
         val rddIntermid=matrixC.getRows.map(functiony)
-        rddIntermid.saveAsObjectFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/input"+size)
+
+        val sequenceRdd=new org.apache.spark.rdd.SequenceFileRDDFunctions[(NullWritable, BytesWritable)](rddIntermid)
+        sequenceRdd.saveAsSequenceFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/inputsequence"+size)
       }
     sc.stop()
 
