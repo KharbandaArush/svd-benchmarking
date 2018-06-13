@@ -22,6 +22,15 @@ from pyspark.mllib.linalg import Vectors
 
 benchmarks={}
 
+def textToVector(x):
+    array=str(x).replace('(','').replace(')','').replace('DenseVector','').split(',')
+    (array[0], Vectors.dense(array[1],array[2]))
+
+
+def extract(x):
+    Vectors.dense(x[1])
+
+
 #Function  to print the metrics
 #TODO - Output text based matrix - check if needed
 def print_metrics(benchmarks):
@@ -99,11 +108,14 @@ for size in sizes:
 
         start = datetime.now()
 
-        inputRdd=sc.objectFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/input"+str(size))
-        inputRdd.foreach(lambda x: g(x))
+        inputRdd=sc.textFile("hdfs://ip-172-31-43-139.us-west-2.compute.internal:8020/data/input"+str(size))
+        intermid2=inputRdd.map(lambda x: textToVector(x)).sortByKey().map(lambda x: extract(x))
 
 
-        mat=RowMatrix(inputRdd)
+
+
+
+        mat=RowMatrix(intermid2)
 
         # Step-2
         # running SVD
