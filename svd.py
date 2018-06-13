@@ -3,11 +3,9 @@
 
 
 #Benchmarking Setup - Configure here for the benchmark size required
-#sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-sizes=[2]
+sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
+cores=[1,2,4,8,16,32,64, 128]
 
-cores=[1,2,4,8,16,32,64]
-#cores=[1,2,4,8]
 
 #Refer Assumption 1, change this if changing AWS instance type
 cores_on_single_machine=4
@@ -24,11 +22,11 @@ benchmarks={}
 
 def textToVector(x):
     array=str(x).replace('(','').replace(')','').replace('DenseVector','').split(',')
-    (array[0], Vectors.dense(array[1],array[2]))
+    return (int(array[0]), Vectors.dense(array[1],array[2]))
 
 
 def extract(x):
-    Vectors.dense(x[1])
+    return Vectors.dense(x[1])
 
 
 #Function  to print the metrics
@@ -39,56 +37,6 @@ def print_metrics(benchmarks):
 
 def g(x):
     print "output"+str(x)
-
-def i (x):
-    for a in x[1]:
-        print "here"+ str(a),
-    print str(x[0])+""
-
-
-def j (x):
-    for a in x:
-        print "here"+ str(a),
-    print ""
-
-def h(x, a):
-    a[x[0]] = x[1]
-
-def p(x):
-    x[1]
-
-
-def transposeRowMatrix(m):
-    transposedRowsRDD = m.rows.zipWithIndex()\
-        .map(lambda x: rowToTransposedTriplet(x[0], x[1]))\
-        .flatMap(lambda x: x)\
-        .groupByKey()\
-        .sortByKey()\
-        .map(lambda x: x[1])\
-        .map(lambda x: buildRow(x))
-    #transposedRowsRDD = m.rows.zipWithIndex().map(lambda x:  rowToTransposedTriplet(x._1, x._2)).flatmap(lambda x:x).groupByKey().sortByKey().map(lambda  x:x._2).map(lambda x: buildRow(x))
-    #.rows.zipWithIndex.map{case (row, rowIndex) => rowToTransposedTriplet(row, rowIndex)}.flatMap(x => x).groupByKey.sortByKey().map(_._2).map(buildRow)
-
-    return RowMatrix(transposedRowsRDD)
-
-
-def rowToTransposedTriplet(row, rowIndex):
-    output=[]
-    indexedRow = np.ndenumerate(row.toArray())
-    for a,b in indexedRow:
-        output.append((a[0], (rowIndex, long(b))))
-    return output
-    #indexedRow = row.toArray.zipWithIndex
-    #indexedRow.map {case(value, colIndex) = > (colIndex.toLong, (rowIndex, value))}
-
-
-def buildRow(rowWithIndexes):
-    resArr = []
-    for x in rowWithIndexes:
-        resArr.insert(x[0], x[1])
-    return Vectors.dense(resArr)
-
-
 
 #Generate a array and requset it for all core configuration
 for size in sizes:
@@ -111,12 +59,11 @@ for size in sizes:
 
         start = datetime.now()
 
-        inputRdd=sc.textFile("hdfs://ip-172-31-8-82.us-west-1.compute.internal:8020/data/input"+str(size))
-        intermid2=inputRdd.foreach(lambda x: g(x))
-            #.map(lambda x: textToVector(x))
-            #.sortByKey()\
-            #.map(lambda x: extract(x))
-        '''
+        inputRdd=sc.textFile("/Users/arushkharbanda/data/input"+str(size))
+        intermid2=inputRdd.map(lambda x: textToVector(x))\
+            .sortByKey()\
+            .map(lambda x: extract(x))#.foreach(lambda x: g(x))
+
         mat=RowMatrix(intermid2)
 
         # Step-2
@@ -135,6 +82,6 @@ for size in sizes:
 
         #Freeing up spark cluster
         sc.stop()
-        '''
+
 print_metrics(benchmarks)
 
