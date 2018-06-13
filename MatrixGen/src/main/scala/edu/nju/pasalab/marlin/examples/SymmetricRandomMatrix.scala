@@ -25,7 +25,7 @@ object SymmetricRandomMatrix {
       .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version","2")
       .set("spark.speculation","false")
       .set("spark.default.parallelism",(1000000/1000)+"")
-      .set("spark.executor.memory","6g")
+      .set("spark.executor.memory","5g")
     val sc = new SparkContext(conf)
     sc.hadoopConfiguration.set("fs.s3.awsAccessKeyId", System.getenv("AWS_ACCESS_KEY"))
     sc.hadoopConfiguration.set("fs.s3.awsSecretAccessKey", System.getenv("AWS_SECRET_ACCESS_KEY"))
