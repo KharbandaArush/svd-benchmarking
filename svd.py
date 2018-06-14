@@ -3,8 +3,8 @@
 
 
 #Benchmarking Setup - Configure here for the benchmark size required
-sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-cores=[1,2,4,8,16,32,64]
+sizes=[10000]
+cores=[64]
 
 
 
