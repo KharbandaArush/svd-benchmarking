@@ -55,7 +55,7 @@ for size in sizes:
             .set("spark.executor.cores",executor_cores)\
             .set("spark.executor.instances",executors) \
             .set("spark.dynamicAllocation.enabled","false")\
-            .set("spark.driver.maxResultSize","6g")\
+            .set("spark.driver.maxResultSize","10g")\
             .set("spark.executor.memory", "60g")\
         # .set("spark.default.parallelism", str(21474836))\
 
