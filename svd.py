@@ -56,17 +56,19 @@ for size in sizes:
             .set("spark.executor.cores",executor_cores)\
             .set("spark.executor.instances",executors)\
             .set("spark.default.parallelism", str(size))\
-            .set("spark.executor.memory", "30g")
+            #.set("spark.executor.memory", "30g")
 
         sc = SparkContext.getOrCreate(conf=conf)
 
         start = datetime.now()
 
-        inputRdd=sc.textFile("hdfs://ip-172-31-39-44.us-west-2.compute.internal:8020/data/input"+str(size))
-        intermid2=inputRdd.map(lambda x: textToVector(x))\
+        #inputRdd=sc.textFile("hdfs://ip-172-31-39-44.us-west-2.compute.internal:8020/data/input"+str(size))
+        inputRdd=sc.textFile("/Users/arushkharbanda/data/input"+str(size))
+        intermid2=inputRdd\
+            .map(lambda x: textToVector(x))\
             .sortByKey()\
             .map(lambda x: extract(x))
-        '''
+
         mat=RowMatrix(intermid2)
 
         # Step-2
@@ -82,7 +84,7 @@ for size in sizes:
         running_time=end-start
 
         benchmarks[str(size) +" x " +str(size) +' with '+str(core)+ " cores"]=running_time
-        '''
+
         #Freeing up spark cluster
         print_metrics(benchmarks)
         sc.stop()
