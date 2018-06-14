@@ -50,6 +50,7 @@ for size in sizes:
         executor_cores= cores_on_single_machine if core%cores_on_single_machine==0 else core%cores_on_single_machine
         executors=core/cores_on_single_machine if core%cores_on_single_machine==0 else core
 
+
         #Initializing Spark
         conf = SparkConf().setAppName("SVDBenchmarking")\
             .set("spark.executor.cores",executor_cores)\
@@ -62,10 +63,9 @@ for size in sizes:
         start = datetime.now()
 
         inputRdd=sc.textFile("hdfs://ip-172-31-39-44.us-west-2.compute.internal:8020/data/input"+str(size))
-        intermid2=inputRdd.foreach(lambda x: g(x))
-            #.map(lambda x: textToVector(x)).foreach(lambda x: g(x))\
-            #.sortByKey().foreach(lambda x: g(x))\
-            #.map(lambda x: extract(x)).foreach(lambda x: g(x))
+        intermid2=inputRdd.map(lambda x: textToVector(x))\
+            .sortByKey()\
+            .map(lambda x: extract(x))
         '''
         mat=RowMatrix(intermid2)
 
@@ -84,6 +84,7 @@ for size in sizes:
         benchmarks[str(size) +" x " +str(size) +' with '+str(core)+ " cores"]=running_time
         '''
         #Freeing up spark cluster
+        print_metrics(benchmarks)
         sc.stop()
 
 print_metrics(benchmarks)
