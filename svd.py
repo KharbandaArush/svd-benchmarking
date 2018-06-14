@@ -4,9 +4,9 @@
 
 #Benchmarking Setup - Configure here for the benchmark size required
 #sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-#cores=[1,2,4,8,16,32,64, 128]
-sizes=[100]
-cores=[1]
+cores=[1,2,4,8,16,32,64, 128]
+sizes=[100,1000,10000]
+
 
 
 #Refer Assumption 1, change this if changing AWS instance type
