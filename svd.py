@@ -8,7 +8,7 @@ cores=[1,2,4,8,16,32,64, 128]
 
 
 #Refer Assumption 1, change this if changing AWS instance type
-cores_on_single_machine=4
+cores_on_single_machine=16
 
 
 import numpy as np
@@ -53,7 +53,7 @@ for size in sizes:
             .set("spark.executor.cores",executor_cores)\
             .set("spark.executor.instances",executors)\
             .set("spark.default.parallelism", str(size))\
-            .set("spark.executor.memory", "5g")
+            .set("spark.executor.memory", "30g")
 
         sc = SparkContext.getOrCreate(conf=conf)
 
@@ -62,7 +62,7 @@ for size in sizes:
         inputRdd=sc.textFile("/Users/arushkharbanda/data/input"+str(size))
         intermid2=inputRdd.map(lambda x: textToVector(x))\
             .sortByKey()\
-            .map(lambda x: extract(x))#.foreach(lambda x: g(x))
+            .map(lambda x: extract(x))
 
         mat=RowMatrix(intermid2)
 
