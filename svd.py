@@ -83,7 +83,7 @@ for size in sizes:
 
         running_time=end-start
 
-        benchmarks[str(size) +" x " +str(size) +' with '+str(core)+ " cores (Executors="+executors+", Executor Cores="+executor_cores+")"]=running_time
+        benchmarks[str(size) +" x " +str(size) +' with '+str(core)+ " cores (Executors="+str(executors)+", Executor Cores="+str(executor_cores)+")"]=running_time
 
         #Freeing up spark cluster
         print_metrics(benchmarks)
