@@ -4,13 +4,14 @@
 
 #Benchmarking Setup - Configure here for the benchmark size required
 #sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-cores=[1,2,4,8,16,32,64]
+#cores=[1,2,4,8,16,32,64]
+cores=[32,64]
 sizes=[1000,10000]
 
 
 
 #Refer Assumption 1, change this if changing AWS instance type
-max_cores_for_a_single_executor=4
+max_cores_for_a_single_executor=16
 
 
 
