@@ -47,16 +47,17 @@ for size in sizes:
     for core in cores:
 
         # Calculating spark configuration for a distributed setup
-        executor_cores= max_cores_for_a_single_executor if core%max_cores_for_a_single_executor==0 else core%max_cores_for_a_single_executor
-        executors=core/max_cores_for_a_single_executor if core%max_cores_for_a_single_executor==0 else core
+        executor_cores= max_cores_for_a_single_executor if core>max_cores_for_a_single_executor else core
+        executors=1 if core/max_cores_for_a_single_executor==0 else core/max_cores_for_a_single_executor
 
 
         #Initializing Spark
         conf = SparkConf().setAppName("SVDBenchmarking")\
             .set("spark.executor.cores",executor_cores)\
-            .set("spark.executor.instances",executors)
-            #.set("spark.default.parallelism", str(size))
-            #.set("spark.executor.memory", "30g")
+            .set("spark.executor.instances",executors) \
+            .set("spark.dynamicAllocation.enabled","false")\
+            .set("spark.default.parallelism", str(size))\
+            .set("spark.executor.memory", "30g")
 
         sc = SparkContext.getOrCreate(conf=conf)
 
