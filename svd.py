@@ -10,7 +10,7 @@ sizes=[100,1000,10000]
 
 
 #Refer Assumption 1, change this if changing AWS instance type
-cores_on_single_machine=16
+max_cores_for_a_single_executor=4
 
 
 
@@ -83,7 +83,7 @@ for size in sizes:
 
         running_time=end-start
 
-        benchmarks[str(size) +" x " +str(size) +' with '+str(core)+ " cores"]=running_time
+        benchmarks[str(size) +" x " +str(size) +' with '+str(core)+ " cores (Executors="+executors+", Executor Cores="+executor_cores+")"]=running_time
 
         #Freeing up spark cluster
         print_metrics(benchmarks)
