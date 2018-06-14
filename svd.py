@@ -59,7 +59,7 @@ for size in sizes:
 
         start = datetime.now()
 
-        inputRdd=sc.textFile("hdfs://ip-172-31-39-44.us-west-2.compute.internal:8020/input"+str(size))
+        inputRdd=sc.textFile("hdfs://ip-172-31-39-44.us-west-2.compute.internal:8020/data/input"+str(size))
         intermid2=inputRdd.map(lambda x: textToVector(x))\
             .sortByKey()\
             .map(lambda x: extract(x))
