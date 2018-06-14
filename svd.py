@@ -3,10 +3,8 @@
 
 
 #Benchmarking Setup - Configure here for the benchmark size required
-#sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
-#cores=[1,2,4,8,16,32,64]
-cores=[64]
-sizes=[10000]
+sizes=[100,1000, 10000, 50000, 100000, 500000, 1000000]
+cores=[1,2,4,8,16,32,64]
 
 
 
@@ -57,8 +55,8 @@ for size in sizes:
             .set("spark.executor.cores",executor_cores)\
             .set("spark.executor.instances",executors) \
             .set("spark.dynamicAllocation.enabled","false")\
-            .set("spark.driver.memory","100g")\
-            .set("spark.executor.memory", "100g")
+            .set("spark.driver.maxResultSize","6g")\
+            .set("spark.executor.memory", "60g")\
         # .set("spark.default.parallelism", str(21474836))\
 
         sc = SparkContext.getOrCreate(conf=conf)
