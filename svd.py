@@ -57,7 +57,7 @@ for size in sizes:
             .set("spark.executor.cores",executor_cores)\
             .set("spark.executor.instances",executors) \
             .set("spark.dynamicAllocation.enabled","false")\
-            .set("spark.executor.memory", "100g")
+            #.set("spark.executor.memory", "100g")
         # .set("spark.default.parallelism", str(21474836))\
 
         sc = SparkContext.getOrCreate(conf=conf)
