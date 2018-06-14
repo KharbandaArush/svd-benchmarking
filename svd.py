@@ -22,7 +22,7 @@ benchmarks={}
 
 def textToVector(x):
     array=str(x).replace('(','').replace(')','').replace('DenseVector','').split(',')
-    return (int(array[0]), Vectors.dense(array[1],array[2]))
+    return (int(array[0]), Vectors.dense(array[1:]))
 
 
 def extract(x):
@@ -60,10 +60,11 @@ for size in sizes:
         start = datetime.now()
 
         inputRdd=sc.textFile("hdfs://ip-172-31-39-44.us-west-2.compute.internal:8020/data/input"+str(size))
-        intermid2=inputRdd.map(lambda x: textToVector(x))\
-            .sortByKey()\
-            .map(lambda x: extract(x))
-
+        intermid2=inputRdd.foreach(lambda x: g(x))
+            #.map(lambda x: textToVector(x)).foreach(lambda x: g(x))\
+            #.sortByKey().foreach(lambda x: g(x))\
+            #.map(lambda x: extract(x)).foreach(lambda x: g(x))
+        '''
         mat=RowMatrix(intermid2)
 
         # Step-2
@@ -79,7 +80,7 @@ for size in sizes:
         running_time=end-start
 
         benchmarks[str(size) +" x " +str(size) +' with '+str(core)+ " cores"]=running_time
-
+        '''
         #Freeing up spark cluster
         sc.stop()
 
