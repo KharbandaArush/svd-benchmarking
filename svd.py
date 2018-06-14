@@ -56,8 +56,9 @@ for size in sizes:
         conf = SparkConf().setAppName("SVDBenchmarking")\
             .set("spark.executor.cores",executor_cores)\
             .set("spark.executor.instances",executors) \
-            .set("spark.dynamicAllocation.enabled","false")
-            #.set("spark.executor.memory", "100g")
+            .set("spark.dynamicAllocation.enabled","false")\
+            .set("spark.driver.memory","100g")\
+            .set("spark.executor.memory", "100g")
         # .set("spark.default.parallelism", str(21474836))\
 
         sc = SparkContext.getOrCreate(conf=conf)
