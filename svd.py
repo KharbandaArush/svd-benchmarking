@@ -13,7 +13,7 @@ cores=[1]
 cores_on_single_machine=16
 
 
-import numpy as np
+
 from pyspark import SparkContext, SparkConf
 from pyspark.mllib.linalg.distributed import RowMatrix
 from datetime import datetime
