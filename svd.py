@@ -11,7 +11,7 @@ sizes=[10000]
 
 
 #Refer Assumption 1, change this if changing AWS instance type
-max_cores_for_a_single_executor=16
+max_cores_for_a_single_executor=8
 
 
 
